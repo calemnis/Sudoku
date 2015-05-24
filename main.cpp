@@ -9,7 +9,6 @@
 #include "dinamictext.hpp"
 #include "button.hpp"
 #include "sudoku.hpp"
-#include "game.hpp"
 using namespace genv;
 using namespace std;
 
@@ -38,11 +37,43 @@ void Blackscreen(){
         gout << move_to(0,0) << color(0,0,0) << box_to(width-1, height-1);
     }
 
+void Endgame()
+{
+    gout << color(255,255,255) << move_to(20, 200) << text("Congratulations, brave soldier!");
+    gout << move_to(70, 220) << text("Let's have a beer!");
+}
+
 event ev;
 
 int main(){
 
-    ifstream f("medium_sudoku2.txt");
+    bool game_is_on{true};
+    int game_mode{0};
+    string whichgame;
+    cout << "Welcome wanderer! Which difficulty of combat would you prefer?" << endl;
+    cout << "For *easy* type: 1" << endl;
+    cout << "For *medium* type: 2" << endl;
+    cout << "For *difficult* type: 3" << endl;
+
+
+    cin >> game_mode;
+
+    if (game_mode==1) whichgame="easy_sudoku.txt";
+    else if (game_mode==2) whichgame="medium_sudoku.txt";
+    else if (game_mode==3) whichgame="difficult_sudoku.txt";
+    else
+    {
+        do{
+            cout << "Sorry. You must choose a difficulty. Type 1-2-3." << endl;
+            cin >> game_mode;
+        }while (game_mode!=1 && game_mode!=2 && game_mode!=3);
+
+        if (game_mode==1) whichgame="easy_sudoku.txt";
+        else if (game_mode==2) whichgame="medium_sudoku.txt";
+        else if (game_mode==3) whichgame="difficult_sudoku.txt";
+    }
+
+    ifstream f("joke.txt");
     if (!f.good())
     {
         cerr << "Hiba, nincs meg a file" << endl;
@@ -65,7 +96,6 @@ int main(){
 
 
     sudoku* Sudoku=new sudoku(40, 40, 220, 220, false, starting_numbers, solutions);
-    game Game;
     Btn* Btn_one=new Btn(40,280,40,20,false,"  1",[&]()
             {Sudoku->Change_chosen(1);});
     Btn* Btn_two=new Btn(90,280,40,20,false,"  2",[&]()
@@ -104,7 +134,7 @@ while (gin >> ev && ev.keycode!=key_escape){
 
 Blackscreen();
 
- if (Game.is_on)
+ if (game_is_on)
  {
      if (ev.button==btn_left){
         for (auto w:Widgets){
@@ -121,15 +151,12 @@ Blackscreen();
     }
     Time_passed(start);
 
-    if (Sudoku->Is_solved()) Game.is_on=false;
+    if (Sudoku->Is_solved()) game_is_on=false;
  }
  else
  {
-
+    Endgame();
  }
-
-
-
 
     gout << refresh;
 }

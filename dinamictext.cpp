@@ -22,7 +22,9 @@ void dinamictext::Draw(){
         gout << move_to(x_coord+7, y_coord+2) << color(255,0,0) << line_to(x_coord+x_size-7, y_coord+y_size-7);
         gout << move_to(x_coord+x_size-7, y_coord+2) << line_to(x_coord+7, y_coord+y_size-7);
     }
-    gout << move_to(x_coord, y_coord+gout.cascent()) << color(255,255,255);
+    if (this->clicked || this->chosen) gout << color(0,0,0);
+    else gout << color(255,255,255);
+    gout << move_to(x_coord, y_coord+gout.cascent());
 
     if (num==0)
     {
