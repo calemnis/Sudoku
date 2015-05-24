@@ -45,6 +45,7 @@
 		<Unit filename="button.hpp" />
 		<Unit filename="dinamictext.cpp" />
 		<Unit filename="dinamictext.hpp" />
+		<Unit filename="game.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="sudoku.hpp" />
 		<Unit filename="widget.cpp" />

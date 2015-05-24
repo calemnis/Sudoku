@@ -9,23 +9,30 @@ class sudoku:public Widget
 {
 protected:
     vector<vector<dinamictext*>> numz;
+    vector<vector<int>> solz;
     int current_x{0}, current_y{0};
     int num_type;
 
 public:
 
-    sudoku(int pos_x, int pos_y, int size_x, int size_y, bool click, vector<int>incoming_numz):Widget(pos_x, pos_y, size_x, size_y, click)
+
+    sudoku(int pos_x, int pos_y, int size_x, int size_y, bool click, vector<int>incoming_numz, vector<int>solution):Widget(pos_x, pos_y, size_x, size_y, click)
     {
         for (unsigned int i=0; i<9; i++)
         {
             vector<dinamictext*> rows;
+            vector<int> solrows;
             for (unsigned int j=0; j<9; j++)
             {
                 static int k=0;
-                rows.push_back(new dinamictext(pos_x+(j*25), pos_y+(i*25), 25, 25, false, incoming_numz[k]));
+                bool changeable=false;
+                if (incoming_numz[k]==0) changeable=true;
+                rows.push_back(new dinamictext(pos_x+(j*25), pos_y+(i*25), 25, 25, false, changeable, incoming_numz[k]));
+                solrows.push_back(solution[k]);
                 k++;
             }
             numz.push_back(rows);
+            solz.push_back(solrows);
         }
     }
 
@@ -55,10 +62,14 @@ public:
                     numz[i][j]->Change_chosen(false);
                 }
 
+                if (numz[i][j]->Getnum()==solz[i][j] || numz[i][j]->Getnum()==0)
+                {
+                    numz[i][j]->Check(false);
+                }
+
                 numz[i][j]->Draw();
             }
         }
-
 
     }
 
@@ -88,7 +99,37 @@ public:
 
     void Check_sudoku()
     {
+        int counter{0};
+        for (unsigned int i=0; i<9; i++)
+        {
+            for (unsigned int j=0; j<9; j++)
+            {
+                int t_i=i; int t_j=j;
+                int tested=numz[t_i][t_j]->Getnum();
+                int endsolution=solz[t_i][t_j];
 
+                if (tested==numz[i][j]->Getnum()) counter++;
+                if (tested!=endsolution) numz[t_i][t_j]->Check(true);
+            }
+
+        }
+    }
+
+
+    bool Is_solved()
+    {
+    bool solved=false;
+    int total_solved{0};
+    for (unsigned int i=0; i<9; i++)
+        {
+            for (unsigned int j=0; j<9; j++)
+            {
+                if (numz[i][j]->Getnum()==solz[i][j]) total_solved+=1;
+            }
+
+        }
+    if (total_solved==81) solved=true;
+    return solved;
     }
 };
 

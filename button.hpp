@@ -21,21 +21,16 @@ public:
 
     virtual void Draw()
     {
+        gout << move_to(x_coord, y_coord) << color(190,190,190) << box(x_size, y_size);
         if (this->clicked)
         {
-            gout << move_to(x_coord, y_coord) << color(190,190,190) << box(x_size, y_size);
             gout << move_to(x_coord+2, y_coord+2) << color(255,0,0) << box(x_size-4, y_size-4);
-
-            gout << move_to(x_coord,y_coord+3*y_size/4) << color(255,255,255) << text(s_text);
         }
         else
         {
-            gout << move_to(x_coord, y_coord) << color(190,190,190) << box(x_size, y_size);
             gout << move_to(x_coord+2, y_coord+2) << color(0,0,0) << box(x_size-4, y_size-4);
-
-            gout << move_to(x_coord,y_coord+3*y_size/4) << color(255,255,255) << text(s_text);
         }
-
+    gout << move_to(x_coord,y_coord+3*y_size/4) << color(255,255,255) << text(s_text);
 
     }
 
