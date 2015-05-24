@@ -73,7 +73,7 @@ int main(){
         else if (game_mode==3) whichgame="difficult_sudoku.txt";
     }
 
-    ifstream f("joke.txt");
+    ifstream f(whichgame);
     if (!f.good())
     {
         cerr << "Hiba, nincs meg a file" << endl;
